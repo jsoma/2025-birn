@@ -416,6 +416,7 @@ def create_index(notebooks, config, output_dir):
     """Create index.html with links to all notebooks."""
     github_repo = config['github_repo']
     github_branch = config.get('github_branch', 'main')
+    output_dir_name = config.get('output_dir', 'docs')
     
     # Group notebooks by section
     sections = {}
@@ -450,7 +451,7 @@ def create_index(notebooks, config, output_dir):
             if item.get('type') == 'markdown':
                 notebooks_md.append(f"### [{item['title']}](./{item['html_file']})\n")
             else:
-                colab_url = f"https://colab.research.google.com/github/{github_repo}/blob/{github_branch}/publish/{item['exercise_file']}"
+                colab_url = f"https://colab.research.google.com/github/{github_repo}/blob/{github_branch}/{output_dir_name}/{item['exercise_file']}"
                 notebooks_md.append(f"### [{item['title']}]({colab_url})\n")
             
             if item['description']:
@@ -465,8 +466,8 @@ def create_index(notebooks, config, output_dir):
                 notebooks_md.append('</div>\n')
             else:
                 # Handle notebooks
-                colab_url = f"https://colab.research.google.com/github/{github_repo}/blob/{github_branch}/publish/{item['exercise_file']}"
-                answers_colab_url = f"https://colab.research.google.com/github/{github_repo}/blob/{github_branch}/publish/{item['answers_file']}"
+                colab_url = f"https://colab.research.google.com/github/{github_repo}/blob/{github_branch}/{output_dir_name}/{item['exercise_file']}"
+                answers_colab_url = f"https://colab.research.google.com/github/{github_repo}/blob/{github_branch}/{output_dir_name}/{item['answers_file']}"
                 
                 notebooks_md.append('<div class="resource-buttons">\n')
                 notebooks_md.append(f'<a href="{colab_url}" class="resource-button primary">🚀 Live coding worksheet</a>\n')
