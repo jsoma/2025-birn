@@ -191,7 +191,8 @@ def create_setup_cell(zip_name, config, install_packages="pandas natural_pdf tqd
     output_dir = config.get('output_dir', 'docs')
     
     source_lines = [
-        "# Run this cell first to set up the environment\n",
+        "# First we need to download some things!\n",
+        "# Run this cell to get the necessary data and software\n"
         "import os\n",
         "import urllib.request\n",
         "import zipfile\n",
@@ -251,8 +252,17 @@ def process_notebook(notebook_path, output_dir, config):
     # Create complete version (ANSWERS)
     complete_nb = notebook.copy()
     
+    # Set kernel to python3 for both versions
+    if 'metadata' not in complete_nb:
+        complete_nb['metadata'] = {}
+    if 'kernelspec' not in complete_nb['metadata']:
+        complete_nb['metadata']['kernelspec'] = {}
+    complete_nb['metadata']['kernelspec']['name'] = 'python3'
+    complete_nb['metadata']['kernelspec']['display_name'] = 'Python 3'
+    complete_nb['metadata']['kernelspec']['language'] = 'python'
+    
     # Create exercise version
-    exercise_nb = json.loads(json.dumps(notebook))  # Deep copy
+    exercise_nb = json.loads(json.dumps(complete_nb))  # Deep copy
     
     # Process cells for exercise version - replace solution-tagged cells
     for i, cell in enumerate(exercise_nb['cells']):
