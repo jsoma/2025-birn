@@ -1,0 +1,32 @@
+# Workshop configuration
+title: "BIRN Summer School Data Journalism Workshop 2025"
+description: "Learn to scrape, extract and analyze data using Python"
+github_repo: "jsoma/2025-birn"
+github_branch: "main"
+
+# Workshop metadata
+author: "Jonathan Soma"
+organization: "Balkan Investigative Reporting Network Summer School"
+date: "2025"
+
+# Sections to process
+sections:
+  - title: "Structured Data"
+    folder: "structured-data"
+  - title: "Unstructured Data"
+    folder: "unstructured-data"
+
+# Publishing options
+output_dir: "publish"
+index_template: |
+  # {{ title }}
+  
+  {{ description }}
+  
+  ## Materials
+  
+  {{ notebooks }}
+  
+  ---
+  
+  *Created for {{ organization }} by {{ author }}*
