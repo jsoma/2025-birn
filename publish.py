@@ -10,6 +10,7 @@ import zipfile
 from glob import glob
 import yaml
 import re
+import shutil
 try:
     import markdown
 except ImportError:
@@ -300,6 +301,9 @@ def process_notebook(notebook_path, output_dir, config):
     output_dir = Path(output_dir)
     output_dir.mkdir(parents=True, exist_ok=True)
     
+    # Copy any referenced files (PDFs, images) to output
+    find_and_copy_referenced_files(notebook, notebook_dir, output_dir)
+    
     # Exercise version keeps original name
     with open(output_dir / f"{base_name}.ipynb", 'w') as f:
         json.dump(exercise_nb, f, indent=1)
@@ -350,6 +354,42 @@ def create_data_zip(data_patterns, zip_path, base_dir):
                     added_files.add(str(file_path))
         
         print(f"✓ Created {zip_path.name} with {len(added_files)} files")
+
+def find_and_copy_referenced_files(notebook, notebook_dir, output_dir):
+    """Find files referenced in markdown cells and copy them to output."""
+    copied_files = []
+    
+    # Regex patterns for finding file references
+    patterns = [
+        r'\[.*?\]\(([^)]+\.(?:pdf|png|jpg|jpeg|gif|svg))\)',  # Markdown links
+        r'<img.*?src=["\']([^"\']+\.(?:png|jpg|jpeg|gif|svg))["\']',  # HTML img tags
+        r'!\[.*?\]\(([^)]+\.(?:png|jpg|jpeg|gif|svg))\)',  # Markdown images
+    ]
+    
+    for cell in notebook.get('cells', []):
+        if cell['cell_type'] == 'markdown':
+            content = ''.join(cell.get('source', []))
+            
+            for pattern in patterns:
+                matches = re.findall(pattern, content, re.IGNORECASE)
+                for match in matches:
+                    # Skip URLs
+                    if match.startswith('http://') or match.startswith('https://'):
+                        continue
+                    
+                    # Resolve the file path relative to the notebook
+                    source_file = notebook_dir / match
+                    if source_file.exists():
+                        # Copy to output directory
+                        dest_file = output_dir / match
+                        dest_file.parent.mkdir(parents=True, exist_ok=True)
+                        
+                        if not dest_file.exists():
+                            shutil.copy2(source_file, dest_file)
+                            copied_files.append(match)
+                            print(f"  → Copied referenced file: {match}")
+    
+    return copied_files
 
 def process_markdown(markdown_path, output_dir, config):
     """Process a markdown file with frontmatter and return info for index."""
