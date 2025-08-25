@@ -501,8 +501,6 @@ def create_index(notebooks, config, output_dir):
 
 {{ description }}
 
-## Materials
-
 {{ notebooks }}
 ''')
     

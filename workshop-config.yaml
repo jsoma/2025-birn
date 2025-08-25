@@ -22,9 +22,7 @@ index_template: |
   # {{ title }}
   
   {{ description }}
-  
-  ## Materials
-  
+    
   {{ notebooks }}
   
   ---
