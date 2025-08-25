@@ -11,9 +11,11 @@ date: "2025"
 
 # Sections to process
 sections:
-  - title: "Structured Data"
+  - title: "Adv Data Journalism I: Structured Data"
     folder: "structured-data"
-  - title: "Unstructured Data"
+  - title: "AI Do's and Don't"
+    folder: "ai-dos-donts"
+  - title: "Adv Data Journalism II: Unstructured Data"
     folder: "unstructured-data"
 
 # Publishing options
