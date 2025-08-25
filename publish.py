@@ -184,8 +184,12 @@ def load_config():
     with open(config_path, 'r') as f:
         return yaml.safe_load(f)
 
-def create_setup_cell(zip_name, github_repo, install_packages="pandas natural_pdf tqdm", links=None):
+def create_setup_cell(zip_name, config, install_packages="pandas natural_pdf tqdm", links=None):
     """Create setup cell that works in Colab, Jupyter, etc."""
+    github_repo = config['github_repo']
+    github_branch = config.get('github_branch', 'main')
+    output_dir = config.get('output_dir', 'docs')
+    
     source_lines = [
         "# Run this cell first to set up the environment\n",
         "import os\n",
@@ -196,8 +200,8 @@ def create_setup_cell(zip_name, github_repo, install_packages="pandas natural_pd
         f"!pip install -q {install_packages}\n",
         "\n",
         "# Download and extract data files\n",
-        f"url = 'https://github.com/{github_repo}/releases/latest/download/{zip_name}'\n",
-        "print(f'Downloading data from {{url}}...')\n",
+        f"url = 'https://github.com/{github_repo}/raw/{github_branch}/{output_dir}/{zip_name}'\n",
+        "print(f'Downloading data from {url}...')\n",
         f"urllib.request.urlretrieve(url, '{zip_name}')\n",
         "\n",
         f"print('Extracting {zip_name}...')\n",
@@ -267,7 +271,7 @@ def process_notebook(notebook_path, output_dir, config):
         zip_name = f"{base_name}-data.zip"
         install_packages = metadata.get('install', 'pandas natural_pdf tqdm')
         links = metadata.get('links', None)
-        setup_cell = create_setup_cell(zip_name, config['github_repo'], install_packages, links)
+        setup_cell = create_setup_cell(zip_name, config, install_packages, links)
         
         # Find first non-metadata cell position
         insert_pos = 0
@@ -510,7 +514,7 @@ def create_index(notebooks, config, output_dir):
 def main():
     """Process all notebooks and create data packages."""
     config = load_config()
-    output_dir = Path(config.get('output_dir', 'publish'))
+    output_dir = Path(config.get('output_dir', 'docs'))
     
     # Clean up old publish directory
     if output_dir.exists():
