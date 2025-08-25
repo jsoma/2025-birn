@@ -17,7 +17,7 @@ sections:
     folder: "unstructured-data"
 
 # Publishing options
-output_dir: "publish"
+output_dir: "docs"
 index_template: |
   # {{ title }}
   
