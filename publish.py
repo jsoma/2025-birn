@@ -11,6 +11,8 @@ from glob import glob
 import yaml
 import re
 import shutil
+import subprocess
+import sys
 try:
     import markdown
 except ImportError:
@@ -237,7 +239,7 @@ def create_setup_cell(zip_name, config, install_packages="pandas natural_pdf tqd
         "outputs": []
     }
 
-def process_notebook(notebook_path, output_dir, config):
+def process_notebook(notebook_path, output_dir, config, section_slides=None):
     """Process a single notebook and return info for index."""
     with open(notebook_path, 'r') as f:
         notebook = json.load(f)
@@ -246,6 +248,10 @@ def process_notebook(notebook_path, output_dir, config):
     if not metadata:
         print(f"Skipping {notebook_path} - no workshop metadata")
         return None
+    
+    # If no item-specific slides, use section slides
+    if not metadata.get('slides') and section_slides:
+        metadata['slides'] = section_slides
     
     base_name = notebook_path.stem
     notebook_dir = notebook_path.parent
@@ -304,6 +310,36 @@ def process_notebook(notebook_path, output_dir, config):
     # Copy any referenced files (PDFs, images) to output
     find_and_copy_referenced_files(notebook, notebook_dir, output_dir)
     
+    # Handle slides if specified (item-specific or section-level)
+    slide_file = metadata.get('slides')
+    if slide_file:
+        # Add simple markdown cell with slide link at the very top
+        slide_link_cell = {
+            "cell_type": "markdown",
+            "metadata": {},
+            "source": [f"**Slides:** [{slide_file}](./{slide_file})"]
+        }
+        # Insert at position 0 (very first cell)
+        complete_nb['cells'].insert(0, slide_link_cell)
+        exercise_nb['cells'].insert(0, slide_link_cell)
+        
+        # Copy slide file to output
+        source_pdf = notebook_dir / slide_file
+        if not source_pdf.exists():
+            # Try as absolute path from project root
+            source_pdf = Path(slide_file)
+        if source_pdf.exists():
+            dest_pdf = output_dir / slide_file
+            if not dest_pdf.exists():
+                dest_pdf.parent.mkdir(parents=True, exist_ok=True)
+                shutil.copy2(source_pdf, dest_pdf)
+                print(f"  → Copied slide file: {slide_file}")
+        else:
+            print(f"\n❌ ERROR: Slide file not found: {slide_file}")
+            print(f"   Looked in: {notebook_dir / slide_file}")
+            print(f"   Also tried: {Path(slide_file)}")
+            sys.exit(1)
+    
     # Exercise version keeps original name
     with open(output_dir / f"{base_name}.ipynb", 'w') as f:
         json.dump(exercise_nb, f, indent=1)
@@ -324,7 +360,8 @@ def process_notebook(notebook_path, output_dir, config):
         'data_file': f"{base_name}-data.zip" if metadata.get('data_files') else None,
         'section': notebook_dir.name,
         'order': metadata.get('order', None),
-        'links': metadata.get('links', None)
+        'links': metadata.get('links', None),
+        'slides': metadata.get('slides', None)
     }
 
 def create_data_zip(data_patterns, zip_path, base_dir):
@@ -391,7 +428,117 @@ def find_and_copy_referenced_files(notebook, notebook_dir, output_dir):
     
     return copied_files
 
-def process_markdown(markdown_path, output_dir, config):
+def create_slide_thumbnail(pdf_path, output_dir, width=800):
+    """Create a thumbnail of the first page of a PDF."""
+    pdf_name = pdf_path.stem
+    thumb_name = f"{pdf_name}-thumb.png"
+    thumb_path = output_dir / thumb_name
+    
+    if thumb_path.exists():
+        return thumb_name
+    
+    try:
+        # Try using ImageMagick's convert command
+        cmd = [
+            'convert',
+            '-density', '150',
+            f'{pdf_path}[0]',  # First page only
+            '-resize', f'{width}x',
+            '-quality', '85',
+            str(thumb_path)
+        ]
+        result = subprocess.run(cmd, capture_output=True, text=True)
+        if result.returncode == 0:
+            print(f"  → Created slide thumbnail: {thumb_name}")
+            return thumb_name
+    except:
+        pass
+    
+    # If ImageMagick fails, try pdftoppm
+    try:
+        cmd = [
+            'pdftoppm',
+            '-f', '1',
+            '-l', '1',
+            '-png',
+            '-r', '150',
+            '-singlefile',
+            str(pdf_path),
+            str(output_dir / pdf_name)
+        ]
+        result = subprocess.run(cmd, capture_output=True, text=True)
+        if result.returncode == 0:
+            # pdftoppm creates a file with .png extension
+            if (output_dir / f"{pdf_name}.png").exists():
+                shutil.move(output_dir / f"{pdf_name}.png", thumb_path)
+                print(f"  → Created slide thumbnail: {thumb_name}")
+                return thumb_name
+    except:
+        pass
+    
+    print(f"  ⚠ Could not create thumbnail for {pdf_path.name} (install ImageMagick or poppler-utils)")
+    return None
+
+def generate_slide_embed(slide_file, notebook_dir, output_dir, item_type='notebook'):
+    """Generate HTML for slide embedding with lazy loading."""
+    # Copy the slide PDF to output
+    source_pdf = notebook_dir / slide_file
+    if not source_pdf.exists():
+        # Try as absolute path from project root
+        source_pdf = Path(slide_file)
+        if not source_pdf.exists():
+            print(f"\n❌ ERROR: Slide file not found: {slide_file}")
+            print(f"   Looked in: {notebook_dir / slide_file}")
+            print(f"   Also tried: {Path(slide_file)}")
+            sys.exit(1)
+    
+    dest_pdf = output_dir / slide_file
+    if not dest_pdf.exists():
+        dest_pdf.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copy2(source_pdf, dest_pdf)
+        print(f"  → Copied slide file: {slide_file}")
+    
+    # Create thumbnail
+    thumb_name = create_slide_thumbnail(source_pdf, output_dir)
+    
+    # Generate unique ID for this slide embed
+    slide_id = f"slides-{source_pdf.stem}".replace(' ', '-').replace('.', '-')
+    
+    # Build the HTML
+    if thumb_name:
+        preview_html = f'<img src="./{thumb_name}" alt="First slide" style="max-width: 100%; cursor: pointer;">'
+    else:
+        preview_html = '<div style="background: #f0f0f0; padding: 3em; text-align: center; cursor: pointer;">📊 Click to load slides</div>'
+    
+    html = f'''
+<div id="{slide_id}" class="slide-embed" style="margin: 2em 0;">
+    <div class="slide-preview" onclick="loadSlides('{slide_id}', './{slide_file}')">
+        {preview_html}
+        <p style="text-align: center; margin-top: 0.5em;">
+            <button style="padding: 0.5em 1em; background: #1976d2; color: white; border: none; border-radius: 4px; cursor: pointer;">
+                📊 View Slides
+            </button>
+            <a href="./{slide_file}" download style="margin-left: 1em;">📥 Download PDF</a>
+        </p>
+    </div>
+    <div class="slide-container" style="display: none;">
+        <embed src="./{slide_file}" type="application/pdf" style="width: 100%; height: 600px; border: 1px solid #ddd;">
+    </div>
+</div>
+
+<script>
+function loadSlides(id, src) {{
+    const container = document.querySelector(`#${{id}} .slide-container`);
+    const preview = document.querySelector(`#${{id}} .slide-preview`);
+    container.style.display = 'block';
+    preview.style.display = 'none';
+}}
+</script>
+'''
+    
+    return html
+
+def process_markdown(markdown_path, output_dir, config, section_slides=None):
     """Process a markdown file with frontmatter and return info for index."""
     with open(markdown_path, 'r') as f:
         content = f.read()
@@ -400,6 +547,10 @@ def process_markdown(markdown_path, output_dir, config):
     if not frontmatter:
         print(f"Skipping {markdown_path} - no frontmatter")
         return None
+    
+    # If no item-specific slides, use section slides
+    if not frontmatter.get('slides') and section_slides:
+        frontmatter['slides'] = section_slides
     
     base_name = markdown_path.stem
     markdown_dir = markdown_path.parent
@@ -415,6 +566,11 @@ def process_markdown(markdown_path, output_dir, config):
     if frontmatter.get('data_files'):
         zip_name = f"{base_name}-data.zip"
         full_content += f'<div class="download-box">\n<strong>Download files:</strong> <a href="./{zip_name}">📦 {zip_name}</a>\n</div>\n\n'
+    
+    # Add slides if specified
+    if frontmatter.get('slides'):
+        slide_html = generate_slide_embed(frontmatter['slides'], markdown_dir, output_dir, 'markdown')
+        full_content += slide_html + '\n\n'
     
     # Add links section if present
     if frontmatter.get('links'):
@@ -449,7 +605,8 @@ def process_markdown(markdown_path, output_dir, config):
         'section': markdown_dir.name,
         'type': 'markdown',
         'order': frontmatter.get('order', None),
-        'links': frontmatter.get('links', None)
+        'links': frontmatter.get('links', None),
+        'slides': frontmatter.get('slides', None)
     }
 
 def create_index(notebooks, config, output_dir):
@@ -521,6 +678,12 @@ def create_index(notebooks, config, output_dir):
                     notebooks_md.append(f'📦 Data: <a href="./{item["data_file"]}">{item["data_file"]}</a>\n')
                 notebooks_md.append('</div>\n')
             
+            # Add slides mention if present
+            if item.get('slides'):
+                notebooks_md.append(f'<div style="margin: 0.5em 0; color: #666;">📊 <a href="./{item["slides"]}">Slides</a></div>\n')
+            elif item.get('section_slides'):
+                notebooks_md.append(f'<div style="margin: 0.5em 0; color: #666;">📊 <a href="./{item["section_slides"]}">Slides</a></div>\n')
+            
             # Add links if present
             if item.get('links'):
                 notebooks_md.append('\n**Links:**\n\n')
@@ -585,10 +748,12 @@ def main():
         if isinstance(section, dict):
             folder = section.get('folder')
             title = section.get('title', folder)
+            section_slides = section.get('slides')
         else:
             # Handle if sections is a list of strings
             folder = section
             title = section
+            section_slides = None
             
         if not folder or not Path(folder).exists():
             print(f"Warning: Section folder '{folder}' not found")
@@ -601,21 +766,27 @@ def main():
                 continue
             
             print(f"\nProcessing {notebook_path}")
-            notebook_info = process_notebook(notebook_path, output_dir, config)
+            notebook_info = process_notebook(notebook_path, output_dir, config, section_slides)
             if notebook_info:
                 # Override section with configured title
                 notebook_info['section'] = title
                 notebook_info['section_folder'] = folder
+                # Add section slides if not overridden
+                if section_slides and not notebook_info.get('slides'):
+                    notebook_info['section_slides'] = section_slides
                 processed_items.append(notebook_info)
         
         # Process markdown files
         for markdown_path in Path(folder).glob('*.md'):
             print(f"\nProcessing {markdown_path}")
-            markdown_info = process_markdown(markdown_path, output_dir, config)
+            markdown_info = process_markdown(markdown_path, output_dir, config, section_slides)
             if markdown_info:
                 # Override section with configured title
                 markdown_info['section'] = title
                 markdown_info['section_folder'] = folder
+                # Add section slides if not overridden
+                if section_slides and not markdown_info.get('slides'):
+                    markdown_info['section_slides'] = section_slides
                 processed_items.append(markdown_info)
     
     # Create index.html

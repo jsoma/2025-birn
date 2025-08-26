@@ -13,8 +13,10 @@ date: "2025"
 sections:
   - title: "Adv Data Journalism I: Structured Data"
     folder: "structured-data"
+    slides: "structured-data/structured-data.pdf"
   - title: "AI Do's and Don't"
     folder: "ai-dos-donts"
+    slides: "ai-dos-donts/-ai-dos-donts.pdf"
   - title: "Adv Data Journalism II: Unstructured Data"
     folder: "unstructured-data"
 

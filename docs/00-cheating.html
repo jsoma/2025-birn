@@ -123,6 +123,30 @@
 <strong>Download files:</strong> <a href="./00-cheating-data.zip">📦 00-cheating-data.zip</a>
 </div>
 
+<div id="slides-structured-data" class="slide-embed" style="margin: 2em 0;">
+    <div class="slide-preview" onclick="loadSlides('slides-structured-data', './structured-data/structured-data.pdf')">
+        <img src="./structured-data-thumb.png" alt="First slide" style="max-width: 100%; cursor: pointer;">
+        <p style="text-align: center; margin-top: 0.5em;">
+            <button style="padding: 0.5em 1em; background: #1976d2; color: white; border: none; border-radius: 4px; cursor: pointer;">
+                📊 View Slides
+            </button>
+            <a href="./structured-data/structured-data.pdf" download style="margin-left: 1em;">📥 Download PDF</a>
+        </p>
+    </div>
+    <div class="slide-container" style="display: none;">
+        <embed src="./structured-data/structured-data.pdf" type="application/pdf" style="width: 100%; height: 600px; border: 1px solid #ddd;">
+    </div>
+</div>
+
+<script>
+function loadSlides(id, src) {
+    const container = document.querySelector(`#${id} .slide-container`);
+    const preview = document.querySelector(`#${id} .slide-preview`);
+    container.style.display = 'block';
+    preview.style.display = 'none';
+}
+</script>
+
 <h2>Useful Links</h2>
 <ul>
 <li><a href="https://chatgpt.com/">ChatGPT</a> - Your AI best friend</li>
