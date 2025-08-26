@@ -124,6 +124,30 @@
 <p><strong>Sites:</strong> <a href="https://ledeprogram.com/">Lede Program</a> • <a href="https://jonathansoma.com/">jonathansoma.com</a> • <a href="https://www.youtube.com/playlist?list=PLewNEVDy7gq1_GPUaL0OQ31QsiHP5ncAQ">Practical AI for Investigative Journalism</a> • <a href="https://badpdfs.com/">Bad PDFs</a></p>
 <p>Learn to scrape, extract and analyze data using Python</p>
 <h2>Adv Data Journalism I: Structured Data</h2>
+<div id="slides-structured-data" class="slide-embed" style="margin: 2em 0;">
+    <div class="slide-preview" onclick="loadSlides('slides-structured-data', './structured-data/structured-data.pdf')">
+        <img src="./structured-data-thumb.png" alt="First slide" style="max-width: 100%; cursor: pointer;">
+        <p style="text-align: center; margin-top: 0.5em;">
+            <button style="padding: 0.5em 1em; background: #1976d2; color: white; border: none; border-radius: 4px; cursor: pointer;">
+                📊 View Slides
+            </button>
+            <a href="./structured-data/structured-data.pdf" download style="margin-left: 1em;">📥 Download PDF</a>
+        </p>
+    </div>
+    <div class="slide-container" style="display: none;">
+        <embed src="./structured-data/structured-data.pdf" type="application/pdf" style="width: 100%; height: 600px; border: 1px solid #ddd;">
+    </div>
+</div>
+
+<script>
+function loadSlides(id, src) {
+    const container = document.querySelector(`#${id} .slide-container`);
+    const preview = document.querySelector(`#${id} .slide-preview`);
+    container.style.display = 'block';
+    preview.style.display = 'none';
+}
+</script>
+
 <h3><a href="./00-cheating.html">Why can't we just use AI for everything???</a></h3>
 <p>Exploring what AI can and can't do when working with structured data</p>
 <div>
@@ -193,7 +217,31 @@
 
 </ul>
 
-<h2>Adv Data Journalism II: Unstructured Data</h2>
+<h2>AI Do's and Don't</h2>
+<div id="slides-birn-ai-dos-donts" class="slide-embed" style="margin: 2em 0;">
+    <div class="slide-preview" onclick="loadSlides('slides-birn-ai-dos-donts', './ai-dos-donts/birn-ai-dos-donts.pdf')">
+        <img src="./birn-ai-dos-donts-thumb.png" alt="First slide" style="max-width: 100%; cursor: pointer;">
+        <p style="text-align: center; margin-top: 0.5em;">
+            <button style="padding: 0.5em 1em; background: #1976d2; color: white; border: none; border-radius: 4px; cursor: pointer;">
+                📊 View Slides
+            </button>
+            <a href="./ai-dos-donts/birn-ai-dos-donts.pdf" download style="margin-left: 1em;">📥 Download PDF</a>
+        </p>
+    </div>
+    <div class="slide-container" style="display: none;">
+        <embed src="./ai-dos-donts/birn-ai-dos-donts.pdf" type="application/pdf" style="width: 100%; height: 600px; border: 1px solid #ddd;">
+    </div>
+</div>
+
+<script>
+function loadSlides(id, src) {
+    const container = document.querySelector(`#${id} .slide-container`);
+    const preview = document.querySelector(`#${id} .slide-preview`);
+    container.style.display = 'block';
+    preview.style.display = 'none';
+}
+</script>
+
 <h3><a href="./procurement.html">AI Do's and Don'ts</a></h3>
 <p>How can AI help with newsroom tasks?</p>
 <div>
@@ -201,6 +249,8 @@
 📦 Data: <a href="./procurement-data.zip">procurement-data.zip</a><br>
 
 </div>
+
+<div style="margin: 0.5em 0; color: #666;">📑 Slides: <a href="./ai-dos-donts/birn-ai-dos-donts.pdf">birn-ai-dos-donts.pdf</a></div>
 
 <p><strong>Links:</strong></p>
 <ul>

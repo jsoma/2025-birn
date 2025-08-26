@@ -16,7 +16,7 @@ sections:
     slides: "structured-data/structured-data.pdf"
   - title: "AI Do's and Don't"
     folder: "ai-dos-donts"
-    slides: "ai-dos-donts/-ai-dos-donts.pdf"
+    slides: "ai-dos-donts/birn-ai-dos-donts.pdf"
   - title: "Adv Data Journalism II: Unstructured Data"
     folder: "unstructured-data"
 

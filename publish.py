@@ -617,6 +617,13 @@ def create_index(notebooks, config, output_dir):
     
     # Group notebooks by section
     sections = {}
+    section_configs = {}
+    
+    # Get section configurations from config
+    for section_cfg in config.get('sections', []):
+        if isinstance(section_cfg, dict):
+            section_configs[section_cfg.get('title', section_cfg.get('folder'))] = section_cfg
+    
     for nb in notebooks:
         section = nb['section']
         if section not in sections:
@@ -626,8 +633,30 @@ def create_index(notebooks, config, output_dir):
     # Build notebooks markdown
     notebooks_md = []
     
-    for section, section_items in sorted(sections.items()):
+    # Process sections in the order they appear in config
+    section_order = []
+    for section_cfg in config.get('sections', []):
+        if isinstance(section_cfg, dict):
+            title = section_cfg.get('title', section_cfg.get('folder'))
+            if title in sections:
+                section_order.append(title)
+    
+    # Add any sections not in config at the end
+    for section in sorted(sections.keys()):
+        if section not in section_order:
+            section_order.append(section)
+    
+    for section in section_order:
+        section_items = sections.get(section, [])
         notebooks_md.append(f'\n## {section}\n')
+        
+        # Add section slides if available
+        section_cfg = section_configs.get(section, {})
+        if section_cfg.get('slides'):
+            # Get the first item's folder to determine the section directory
+            section_dir = Path(section_items[0]['section_folder']) if section_items else Path('.')
+            slide_html = generate_slide_embed(section_cfg['slides'], section_dir.parent, Path(config.get('output_dir', 'docs')), 'index')
+            notebooks_md.append('\n' + slide_html + '\n')
         
         # Sort items: first by those with order (ascending), then by filename (descending)
         def sort_key(item):
@@ -678,13 +707,10 @@ def create_index(notebooks, config, output_dir):
                     notebooks_md.append(f'📦 Data: <a href="./{item["data_file"]}">{item["data_file"]}</a>\n')
                 notebooks_md.append('</div>\n')
             
-            # Add slides mention if present
-            if item.get('slides'):
+            # Add slides mention if present (only item-specific slides, not section slides)
+            if item.get('slides') and not item.get('section_slides'):
                 slide_filename = Path(item["slides"]).name
                 notebooks_md.append(f'<div style="margin: 0.5em 0; color: #666;">📑 Slides: <a href="./{item["slides"]}">{slide_filename}</a></div>\n')
-            elif item.get('section_slides'):
-                slide_filename = Path(item["section_slides"]).name
-                notebooks_md.append(f'<div style="margin: 0.5em 0; color: #666;">📑 Slides: <a href="./{item["section_slides"]}">{slide_filename}</a></div>\n')
             
             # Add links if present
             if item.get('links'):
