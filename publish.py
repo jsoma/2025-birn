@@ -86,6 +86,20 @@ def markdown_to_html(content, title=""):
         }}
         pre code {{ background: none; padding: 0; }}
         a {{ color: #0066cc; }}
+        img {{
+            display: block;
+            max-width: 100%;
+            height: auto;
+            margin: 0 auto;
+            border: solid 1px #999;
+        }}
+        video {{
+            display: block;
+            max-width: 100%;
+            height: auto;
+            margin: 0 auto;
+            border: solid 1px #999;
+        }}
         .download-box {{
             background: #e8f4f8;
             padding: 1em;
@@ -428,6 +442,42 @@ def find_and_copy_referenced_files(notebook, notebook_dir, output_dir):
     
     return copied_files
 
+def copy_markdown_referenced_files(content, markdown_dir, output_dir):
+    """Find files referenced in markdown content and copy them to output."""
+    copied_files = []
+    
+    # Regex patterns for finding file references
+    patterns = [
+        r'\[.*?\]\(([^)]+\.(?:pdf|png|jpg|jpeg|gif|svg|mp4|webm|mov))\)',  # Markdown links
+        r'<img.*?src=["\']([^"\']+\.(?:png|jpg|jpeg|gif|svg))["\']',  # HTML img tags
+        r'!\[.*?\]\(([^)]+\.(?:png|jpg|jpeg|gif|svg))\)',  # Markdown images
+        r'<source.*?src=["\']([^"\']+\.(?:mp4|webm|mov))["\']',  # HTML video sources
+        r'<video.*?src=["\']([^"\']+\.(?:mp4|webm|mov))["\']',  # HTML video src
+    ]
+    
+    for pattern in patterns:
+        matches = re.findall(pattern, content, re.IGNORECASE)
+        for match in matches:
+            # Skip URLs
+            if match.startswith('http://') or match.startswith('https://'):
+                continue
+            
+            # Resolve the file path relative to the markdown file
+            source_file = markdown_dir / match
+            if source_file.exists():
+                # Copy to output directory
+                dest_file = output_dir / match
+                dest_file.parent.mkdir(parents=True, exist_ok=True)
+                
+                if not dest_file.exists():
+                    shutil.copy2(source_file, dest_file)
+                    copied_files.append(match)
+                    print(f"  → Copied referenced file: {match}")
+            else:
+                print(f"  ⚠ Referenced file not found: {match}")
+    
+    return copied_files
+
 def create_slide_thumbnail(pdf_path, output_dir, width=800):
     """Create a thumbnail of the first page of a PDF."""
     pdf_name = pdf_path.stem
@@ -555,6 +605,9 @@ def process_markdown(markdown_path, output_dir, config, section_slides=None):
     base_name = markdown_path.stem
     markdown_dir = markdown_path.parent
     title = frontmatter.get('title', base_name)
+    
+    # Copy referenced files (images, videos, etc) from markdown content
+    copy_markdown_referenced_files(markdown_content, markdown_dir, output_dir)
     
     # Create data zip if data files are specified
     if frontmatter.get('data_files'):
