@@ -25,6 +25,12 @@ output_dir: "docs"
 index_template: |
   # {{ title }}
   
+  **Jonathan Soma**, Columbia University
+
+  **Contact:** [js4571@columbia.edu](mailto:js4571@columbia.edu) • [@dangerscarf](https://x.com/dangerscarf)
+  
+  **Sites:** [Lede Program](https://ledeprogram.com/) • [jonathansoma.com](https://jonathansoma.com/) • [Practical AI for Investigative Journalism](https://www.youtube.com/playlist?list=PLewNEVDy7gq1_GPUaL0OQ31QsiHP5ncAQ) • [Bad PDFs](https://badpdfs.com/)
+
   {{ description }}
     
   {{ notebooks }}
