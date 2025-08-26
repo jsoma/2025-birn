@@ -681,10 +681,10 @@ def create_index(notebooks, config, output_dir):
             # Add slides mention if present
             if item.get('slides'):
                 slide_filename = Path(item["slides"]).name
-                notebooks_md.append(f'<div style="margin: 0.5em 0; color: #666;">Slides: <a href="./{item["slides"]}">{slide_filename}</a></div>\n')
+                notebooks_md.append(f'<div style="margin: 0.5em 0; color: #666;">📑 Slides: <a href="./{item["slides"]}">{slide_filename}</a></div>\n')
             elif item.get('section_slides'):
                 slide_filename = Path(item["section_slides"]).name
-                notebooks_md.append(f'<div style="margin: 0.5em 0; color: #666;">Slides: <a href="./{item["section_slides"]}">{slide_filename}</a></div>\n')
+                notebooks_md.append(f'<div style="margin: 0.5em 0; color: #666;">📑 Slides: <a href="./{item["section_slides"]}">{slide_filename}</a></div>\n')
             
             # Add links if present
             if item.get('links'):
