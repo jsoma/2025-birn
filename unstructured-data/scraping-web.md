@@ -149,6 +149,6 @@ If you want to clean your data or download a file analysis, **just ask ChatGPT**
 
 ### Analyzing procurement data
 
-1. Scrape the list of [procurement data for Prishtina](https://prishtinaonline.com/prokurimi/njoftim-per-kontrate)
-2. Download them all (or some of them, probably) using [Motrix](https://motrix.app/)
-3. What questions can you answer with NotebookLM? What questions do you need to convert to a spreadsheet for?
+Are there any Pristina procurement contracts that have to do with animals that live on the street? 
+
+If you're feeling fancy, scrape the list of [procurement data for Prishtina](https://prishtinaonline.com/prokurimi/njoftim-per-kontrate) and download them all (or some of them, probably) using [Motrix](https://motrix.app/). You can also just use the ones in this session's download materials (the **procurement-sample** folder.)

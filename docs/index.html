@@ -317,6 +317,30 @@ function loadSlides(id, src) {
 </ul>
 
 <h2 id="adv-data-journalism-ii-unstructured-data">Adv Data Journalism II: Unstructured Data</h2>
+<div id="slides-unstructured-data" class="slide-embed" style="margin: 2em 0;">
+    <div class="slide-preview" onclick="loadSlides('slides-unstructured-data', './unstructured-data/unstructured-data.pdf')">
+        <img src="./unstructured-data-thumb.png" alt="First slide" style="max-width: 100%; cursor: pointer;">
+        <p style="text-align: center; margin-top: 0.5em;">
+            <button style="padding: 0.5em 1em; background: #1976d2; color: white; border: none; border-radius: 4px; cursor: pointer;">
+                📊 View Slides
+            </button>
+            <a href="./unstructured-data/unstructured-data.pdf" download style="margin-left: 1em;">📥 Download PDF</a>
+        </p>
+    </div>
+    <div class="slide-container" style="display: none;">
+        <embed src="./unstructured-data/unstructured-data.pdf" type="application/pdf" style="width: 100%; height: 600px; border: 1px solid #ddd;">
+    </div>
+</div>
+
+<script>
+function loadSlides(id, src) {
+    const container = document.querySelector(`#${id} .slide-container`);
+    const preview = document.querySelector(`#${id} .slide-preview`);
+    container.style.display = 'block';
+    preview.style.display = 'none';
+}
+</script>
+
 <h3 id="scraping-web-sites-and-unstructured-data"><a href="./scraping-web.html">Scraping web sites and unstructured data</a></h3>
 <p>Making the best of data from the internet and bad, ugly data from PDFs</p>
 <div>
@@ -324,6 +348,8 @@ function loadSlides(id, src) {
 📦 Data: <a href="./scraping-web-data.zip">scraping-web-data.zip</a><br>
 
 </div>
+
+<div style="margin: 0.5em 0; color: #666;">📑 Slides: <a href="./unstructured-data/unstructured-data.pdf">unstructured-data.pdf</a></div>
 
 <p><strong>Links:</strong></p>
 <ul>

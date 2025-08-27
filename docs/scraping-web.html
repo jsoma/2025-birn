@@ -168,6 +168,30 @@
 <strong>Download files:</strong> <a href="./scraping-web-data.zip">📦 scraping-web-data.zip</a>
 </div>
 
+<div id="slides-unstructured-data" class="slide-embed" style="margin: 2em 0;">
+    <div class="slide-preview" onclick="loadSlides('slides-unstructured-data', './unstructured-data/unstructured-data.pdf')">
+        <img src="./unstructured-data-thumb.png" alt="First slide" style="max-width: 100%; cursor: pointer;">
+        <p style="text-align: center; margin-top: 0.5em;">
+            <button style="padding: 0.5em 1em; background: #1976d2; color: white; border: none; border-radius: 4px; cursor: pointer;">
+                📊 View Slides
+            </button>
+            <a href="./unstructured-data/unstructured-data.pdf" download style="margin-left: 1em;">📥 Download PDF</a>
+        </p>
+    </div>
+    <div class="slide-container" style="display: none;">
+        <embed src="./unstructured-data/unstructured-data.pdf" type="application/pdf" style="width: 100%; height: 600px; border: 1px solid #ddd;">
+    </div>
+</div>
+
+<script>
+function loadSlides(id, src) {
+    const container = document.querySelector(`#${id} .slide-container`);
+    const preview = document.querySelector(`#${id} .slide-preview`);
+    container.style.display = 'block';
+    preview.style.display = 'none';
+}
+</script>
+
 <h2 id="useful-links">Useful Links</h2>
 <ul>
 <li><a href="https://jsoma.github.io/easy-scraper-modified/">Easy Scraper (modified)</a> - Chrome extension for scraping – modified by me to make it work in more cases</li>
@@ -250,10 +274,7 @@
 <li>Upload it into Google Sheets and use Claude for Sheets to summarize or analyze each transcript.</li>
 </ol>
 <h3 id="analyzing-procurement-data">Analyzing procurement data</h3>
-<ol>
-<li>Scrape the list of <a href="https://prishtinaonline.com/prokurimi/njoftim-per-kontrate">procurement data for Prishtina</a></li>
-<li>Download them all (or some of them, probably) using <a href="https://motrix.app/">Motrix</a></li>
-<li>What questions can you answer with NotebookLM? What questions do you need to convert to a spreadsheet for?</li>
-</ol>
+<p>Are there any Pristina procurement contracts that have to do with animals that live on the street? </p>
+<p>If you're feeling fancy, scrape the list of <a href="https://prishtinaonline.com/prokurimi/njoftim-per-kontrate">procurement data for Prishtina</a> and download them all (or some of them, probably) using <a href="https://motrix.app/">Motrix</a>. You can also just use the ones in this session's download materials (the <strong>procurement-sample</strong> folder.)</p>
 </body>
 </html>

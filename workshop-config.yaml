@@ -19,6 +19,7 @@ sections:
     slides: "ai-dos-donts/birn-ai-dos-donts.pdf"
   - title: "Adv Data Journalism II: Unstructured Data"
     folder: "unstructured-data"
+    slides: "unstructured-data/unstructured-data.pdf"
 
 # Publishing options
 output_dir: "docs"
