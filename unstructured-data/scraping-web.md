@@ -93,7 +93,7 @@ And in the end, export with the **CSV** button.
 
 ### Getting some code
 
-First, open up your CSV in Google Sheets or Excel.
+If you have a CSV that you want Colab to analyze, open up your CSV in Google Sheets or Excel. **You'll need to paste a few rows into your conversation so ChatGPT knows what your data looks like.**
 
 Explain what you want to ChatGPT. Let's say you asked me, "I want to explore the data" and I said "there's a nice graphing library called Altair that will do that for you"
 
@@ -103,13 +103,15 @@ Explain what you want to ChatGPT. Let's say you asked me, "I want to explore the
 >
 > (paste a few rows of data)
 
+**Be as descriptive as possible**. You'll get some code back.
+
 ### Using the code
 
 Then, visit [Google Colab](https://colab.research.google.com/) and create a **New Notebook**.
 
 ![](colab-new.png)
 
-To be able to upload files, click **Run all** to make the notebook start, then click the **Folder button** on the left-hand side.
+To be need to use a file (like your CSV, if you have one), click **Run all** to make the notebook start, then click the **Folder button** on the left-hand side.
 
 ![](colab-upload-1.png)
 
@@ -119,7 +121,7 @@ Now you can use the Upload icon or drag-and-drop files in.
   <source src="colab-upload-2.mov">
 </video>
 
-Now you'll copy the code [from the ChatGPT conversation](https://chatgpt.com/share/68ae8bc9-2b8c-800d-a701-2ad4e8633c11) and put it into your notebook. Use the **+ Code** button to add new blocks of code, and **►** Play button to run your code.
+**To run your code:** you'll copy the code [from the ChatGPT conversation](https://chatgpt.com/share/68ae8bc9-2b8c-800d-a701-2ad4e8633c11) and put it into your notebook. Use the **+ Code** button to add new blocks of code, and **►** Play button to run your code.
 
 ![](copy-code-1.png)
 
