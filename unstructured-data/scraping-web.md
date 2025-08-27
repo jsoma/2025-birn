@@ -2,7 +2,7 @@
 title: "Scraping web sites and unstructured data"
 description: "Making the best of data from the internet and bad, ugly data from PDFs"
 order: 1
-files:
+data_files:
   - nyc-documents/*
   - procurement-sample/*
 links:
