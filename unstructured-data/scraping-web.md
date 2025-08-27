@@ -59,7 +59,7 @@ Ask your question.
 
 ## Using Easy Scraper
 
-After you've installed Easy Scraper, you first need to open it by clicking the extensions button.
+After you've [installed Easy Scraper](https://jsoma.github.io/easy-scraper-modified/), you first need to open it by clicking the extensions button.
 
 ![](easyscraper-open.png)
 
