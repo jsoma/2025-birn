@@ -23,6 +23,8 @@ links:
     - url: https://chromewebstore.google.com/detail/bulk-pdf-downloader-%E2%80%93-dow/flpckiejbjlkjgfohcoognkaogiacjnh
       name: Bulk PDF Downloader
       description: Chrome extension for downloading all of the PDFs linked on a page
+    - url: https://docs.google.com/spreadsheets/d/1JcVNQEBVLCoeQo8pbdm4OjDsaskB7FMzM_r83t224FA/edit?usp=sharing
+      name: Claude for Sheets example spreadsheet
     - url: https://github.com/yt-dlp/yt-dlp
       name: yt-dlp
       description: A Python library for downloading videos on the internet
@@ -137,6 +139,10 @@ If you want to clean your data or download a file analysis, **just ask ChatGPT**
 
 ## Exercises
 
+### Scraping monuments
+
+[This website](https://web.archive.org/web/20121116220124/http://www.coloribus.com/focus/outdoor-ads-as-monuments-sculptures-stunts-installations-statues/11933155/) is awful looking. Can you use Easy Scraper to grab them as a CSV?
+
 ### Analyzing Airbnb
 
 1. Visit [Airbnb](https://www.airbnb.com/) for a given region. Search for some time in the future.
@@ -151,7 +157,7 @@ If you want to clean your data or download a file analysis, **just ask ChatGPT**
 
 ### Analyzing procurement data
 
-Are there any Pristina procurement contracts that have to do with animals that live on the street? 
+*Are there any Pristina procurement contracts that have to do with animals that live on the street?*
 
 If you're feeling fancy, scrape the list of [procurement data for Prishtina](https://prishtinaonline.com/prokurimi/njoftim-per-kontrate) and download them all (or some of them, probably) using [Motrix](https://motrix.app/). You can also just use the ones in this session's download materials (the **procurement-sample** folder.)
 
@@ -159,4 +165,6 @@ If you're feeling fancy, scrape the list of [procurement data for Prishtina](htt
 
 We can't answer questions like "what is the largest contract" without converting the procurement data into structured data.
 
-[Here's how I did it for exactly one file](https://colab.research.google.com/github/jsoma/2025-birn/blob/main/unstructured-data/procurement-sample-analysis.ipynb), can you make it work for the rest?
+If you're feeling lazy, use the "procurement documents" tab in the [Claude for Sheets example spreadsheet](https://docs.google.com/spreadsheets/d/1JcVNQEBVLCoeQo8pbdm4OjDsaskB7FMzM_r83t224FA/edit?gid=1292642224#gid=1292642224). I already organized it for you!
+
+But if you're feeling very charged up, [here's how I did it for exactly one file](https://colab.research.google.com/github/jsoma/2025-birn/blob/main/unstructured-data/procurement-sample-analysis.ipynb), can you talk to ChatGPT to make it work for the rest?

@@ -200,6 +200,7 @@ function loadSlides(id, src) {
 <li><a href="https://web.archive.org/web/20121116220124/http://www.coloribus.com/focus/outdoor-ads-as-monuments-sculptures-stunts-installations-statues/11933155/">Outdoor ads as monuments, sculptures, stunts, installations, statues</a> - A resource from the NEWBORN monument's Wikipedia page</li>
 <li><a href="https://motrix.app/">Motrix</a> - A great app for downloading things</li>
 <li><a href="https://chromewebstore.google.com/detail/bulk-pdf-downloader-%E2%80%93-dow/flpckiejbjlkjgfohcoognkaogiacjnh">Bulk PDF Downloader</a> - Chrome extension for downloading all of the PDFs linked on a page</li>
+<li><a href="https://docs.google.com/spreadsheets/d/1JcVNQEBVLCoeQo8pbdm4OjDsaskB7FMzM_r83t224FA/edit?usp=sharing">Claude for Sheets example spreadsheet</a></li>
 <li><a href="https://github.com/yt-dlp/yt-dlp">yt-dlp</a> - A Python library for downloading videos on the internet</li>
 <li><a href="https://github.com/openai/whisper">Whisper</a> - A Python library for transcribing audio and video</li>
 <li><a href="https://s7.stacher.io/">Stacher</a> - A tool for downloading YouTube videos without code</li>
@@ -262,6 +263,8 @@ function loadSlides(id, src) {
 <p>Provide code to fully clean the file and download it as something nice I can give a data person. I'm in Google Colab.</p>
 </blockquote>
 <h2 id="exercises">Exercises</h2>
+<h3 id="scraping-monuments">Scraping monuments</h3>
+<p><a href="https://web.archive.org/web/20121116220124/http://www.coloribus.com/focus/outdoor-ads-as-monuments-sculptures-stunts-installations-statues/11933155/">This website</a> is awful looking. Can you use Easy Scraper to grab them as a CSV?</p>
 <h3 id="analyzing-airbnb">Analyzing Airbnb</h3>
 <ol>
 <li>Visit <a href="https://www.airbnb.com/">Airbnb</a> for a given region. Search for some time in the future.</li>
@@ -275,10 +278,11 @@ function loadSlides(id, src) {
 <li>Upload it into Google Sheets and use Claude for Sheets to summarize or analyze each transcript.</li>
 </ol>
 <h3 id="analyzing-procurement-data">Analyzing procurement data</h3>
-<p>Are there any Pristina procurement contracts that have to do with animals that live on the street? </p>
+<p><em>Are there any Pristina procurement contracts that have to do with animals that live on the street?</em></p>
 <p>If you're feeling fancy, scrape the list of <a href="https://prishtinaonline.com/prokurimi/njoftim-per-kontrate">procurement data for Prishtina</a> and download them all (or some of them, probably) using <a href="https://motrix.app/">Motrix</a>. You can also just use the ones in this session's download materials (the <strong>procurement-sample</strong> folder.)</p>
 <h3 id="more-procurement">More procurement</h3>
 <p>We can't answer questions like "what is the largest contract" without converting the procurement data into structured data.</p>
-<p><a href="https://colab.research.google.com/github/jsoma/2025-birn/blob/main/unstructured-data/procurement-sample-analysis.ipynb">Here's how I did it for exactly one file</a>, can you make it work for the rest?</p>
+<p>If you're feeling lazy, use the "procurement documents" tab in the <a href="https://docs.google.com/spreadsheets/d/1JcVNQEBVLCoeQo8pbdm4OjDsaskB7FMzM_r83t224FA/edit?gid=1292642224#gid=1292642224">Claude for Sheets example spreadsheet</a>. I already organized it for you!</p>
+<p>But if you're feeling very charged up, <a href="https://colab.research.google.com/github/jsoma/2025-birn/blob/main/unstructured-data/procurement-sample-analysis.ipynb">here's how I did it for exactly one file</a>, can you talk to ChatGPT to make it work for the rest?</p>
 </body>
 </html>
