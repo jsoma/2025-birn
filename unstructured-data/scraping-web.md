@@ -2,6 +2,9 @@
 title: "Scraping web sites and unstructured data"
 description: "Making the best of data from the internet and bad, ugly data from PDFs"
 order: 1
+files:
+  - nyc-documents/*
+  - procurement-sample/*
 links:
     - url: https://jsoma.github.io/easy-scraper-modified/
       name: Easy Scraper (modified)
