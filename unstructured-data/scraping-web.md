@@ -153,8 +153,8 @@ Are there any Pristina procurement contracts that have to do with animals that l
 
 If you're feeling fancy, scrape the list of [procurement data for Prishtina](https://prishtinaonline.com/prokurimi/njoftim-per-kontrate) and download them all (or some of them, probably) using [Motrix](https://motrix.app/). You can also just use the ones in this session's download materials (the **procurement-sample** folder.)
 
-## More procurement
+### More procurement
 
-We can't answer questions like "what is the largest contract" without converting the procurement data into 
+We can't answer questions like "what is the largest contract" without converting the procurement data into structured data.
 
-https://colab.research.google.com/github/jsoma/2025-birn/blob/main/unstructured-data/procurement-sample-analysis.ipynb
+[Here's how I did it for exactly one file](https://colab.research.google.com/github/jsoma/2025-birn/blob/main/unstructured-data/procurement-sample-analysis.ipynb), can you make it work for the rest?
