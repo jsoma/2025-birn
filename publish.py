@@ -39,10 +39,32 @@ def extract_markdown_frontmatter(content):
             return {}, content
     return {}, content
 
+def generate_toc_from_markdown(markdown_content, has_useful_links=False):
+    """Generate a table of contents from second-level headers (##) in markdown content."""
+    # Find all second-level headers
+    header_pattern = r'^## (.+)$'
+    headers = re.findall(header_pattern, markdown_content, re.MULTILINE)
+    
+    # Add Useful Links to the beginning if it exists
+    if has_useful_links:
+        headers = ["Useful Links"] + headers
+    
+    if not headers:
+        return ""
+    
+    # Build TOC
+    toc_lines = ["## Table of Contents\n"]
+    for header in headers:
+        # Create anchor link - remove special characters and convert spaces to hyphens
+        anchor = re.sub(r'[^\w\s-]', '', header).strip().lower().replace(' ', '-')
+        toc_lines.append(f"- [{header}](#{anchor})")
+    
+    return "\n".join(toc_lines) + "\n"
+
 def markdown_to_html(content, title=""):
     """Convert markdown to HTML with basic styling."""
     if markdown:
-        html_content = markdown.markdown(content, extensions=['extra', 'codehilite'])
+        html_content = markdown.markdown(content, extensions=['extra', 'codehilite', 'toc'])
     else:
         # Fallback: just wrap in pre tags if markdown not available
         html_content = f"<pre>{content}</pre>"
@@ -61,8 +83,24 @@ def markdown_to_html(content, title=""):
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             line-height: 1.6;
             color: #333;
+            font-size: 16px;
+            padding-bottom: 5em;
         }}
-        h1, h2, h3, h4 {{ margin-top: 2em; }}
+        h1, h3, h4 {{ margin-top: 2em; }}
+        h2 {{
+            position: sticky;
+            top: 0;
+            background: white;
+            padding-top: 2em;
+            padding-bottom: 0.5em;
+            z-index: 100;
+            border-bottom: 2px solid #eee;
+        }}
+        /* Give the first h2 (Table of Contents) less top margin */
+        h2:first-of-type {{
+            margin-top: 1em;
+            padding-top: 1em;
+        }}
         h3 a {{
             text-decoration: none;
         }}
@@ -70,7 +108,7 @@ def markdown_to_html(content, title=""):
             text-decoration: underline;
         }}
         p {{
-            margin: 0.5em 0;
+            margin: 1em 0;
         }}
         code {{ 
             background: #f4f4f4; 
@@ -88,16 +126,22 @@ def markdown_to_html(content, title=""):
         a {{ color: #0066cc; }}
         img {{
             display: block;
-            max-width: 100%;
+            max-width: 80%;
             height: auto;
-            margin: 0 auto;
+            margin: 1em auto;
             border: solid 1px #999;
+        }}
+        blockquote {{
+            border-left: solid lightblue 20px;
+            margin-left: 4em;
+            padding-left: 1em;
+            color: #999;
         }}
         video {{
             display: block;
-            max-width: 100%;
+            max-width: 80%;
             height: auto;
-            margin: 0 auto;
+            margin: 1em auto;
             border: solid 1px #999;
         }}
         .download-box {{
@@ -614,8 +658,16 @@ def process_markdown(markdown_path, output_dir, config, section_slides=None):
         zip_name = f"{base_name}-data.zip"
         create_data_zip(frontmatter['data_files'], output_dir / zip_name, markdown_dir)
     
-    # Build the full content with title and download link
+    # Build the full content with title
     full_content = f"# {title}\n\n"
+    
+    # Generate and add table of contents at the top (after title)
+    has_useful_links = bool(frontmatter.get('links'))
+    toc = generate_toc_from_markdown(markdown_content, has_useful_links)
+    if toc:
+        full_content += toc + "\n"
+    
+    # Add download link if data files exist
     if frontmatter.get('data_files'):
         zip_name = f"{base_name}-data.zip"
         full_content += f'<div class="download-box">\n<strong>Download files:</strong> <a href="./{zip_name}">📦 {zip_name}</a>\n</div>\n\n'

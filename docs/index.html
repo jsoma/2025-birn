@@ -12,8 +12,24 @@
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             line-height: 1.6;
             color: #333;
+            font-size: 16px;
+            padding-bottom: 5em;
         }
-        h1, h2, h3, h4 { margin-top: 2em; }
+        h1, h3, h4 { margin-top: 2em; }
+        h2 {
+            position: sticky;
+            top: 0;
+            background: white;
+            padding-top: 2em;
+            padding-bottom: 0.5em;
+            z-index: 100;
+            border-bottom: 2px solid #eee;
+        }
+        /* Give the first h2 (Table of Contents) less top margin */
+        h2:first-of-type {
+            margin-top: 1em;
+            padding-top: 1em;
+        }
         h3 a {
             text-decoration: none;
         }
@@ -21,7 +37,7 @@
             text-decoration: underline;
         }
         p {
-            margin: 0.5em 0;
+            margin: 1em 0;
         }
         code { 
             background: #f4f4f4; 
@@ -39,16 +55,22 @@
         a { color: #0066cc; }
         img {
             display: block;
-            max-width: 100%;
+            max-width: 80%;
             height: auto;
-            margin: 0 auto;
+            margin: 1em auto;
             border: solid 1px #999;
+        }
+        blockquote {
+            border-left: solid lightblue 20px;
+            margin-left: 4em;
+            padding-left: 1em;
+            color: #999;
         }
         video {
             display: block;
-            max-width: 100%;
+            max-width: 80%;
             height: auto;
-            margin: 0 auto;
+            margin: 1em auto;
             border: solid 1px #999;
         }
         .download-box {
@@ -132,12 +154,12 @@
     </style>
 </head>
 <body>
-<h1>BIRN Summer School 2025 Data Journalism</h1>
+<h1 id="birn-summer-school-2025-data-journalism">BIRN Summer School 2025 Data Journalism</h1>
 <p><strong>Jonathan Soma</strong>, Columbia University</p>
 <p><strong>Contact:</strong> <a href="mailto:js4571@columbia.edu">js4571@columbia.edu</a> • <a href="https://x.com/dangerscarf">@dangerscarf</a></p>
 <p><strong>Sites:</strong> <a href="https://ledeprogram.com/">Lede Program</a> • <a href="https://jonathansoma.com/">jonathansoma.com</a> • <a href="https://www.youtube.com/playlist?list=PLewNEVDy7gq1_GPUaL0OQ31QsiHP5ncAQ">Practical AI for Investigative Journalism</a> • <a href="https://badpdfs.com/">Bad PDFs</a></p>
 <p>Learn to scrape, extract and analyze data using Python</p>
-<h2>Adv Data Journalism I: Structured Data</h2>
+<h2 id="adv-data-journalism-i-structured-data">Adv Data Journalism I: Structured Data</h2>
 <div id="slides-structured-data" class="slide-embed" style="margin: 2em 0;">
     <div class="slide-preview" onclick="loadSlides('slides-structured-data', './structured-data/structured-data.pdf')">
         <img src="./structured-data-thumb.png" alt="First slide" style="max-width: 100%; cursor: pointer;">
@@ -162,7 +184,7 @@ function loadSlides(id, src) {
 }
 </script>
 
-<h3><a href="./00-cheating.html">Why can't we just use AI for everything???</a></h3>
+<h3 id="why-cant-we-just-use-ai-for-everything"><a href="./00-cheating.html">Why can't we just use AI for everything???</a></h3>
 <p>Exploring what AI can and can't do when working with structured data</p>
 <div>
 
@@ -180,7 +202,7 @@ function loadSlides(id, src) {
 
 </ul>
 
-<h3><a href="https://colab.research.google.com/github/jsoma/2025-birn/blob/main/docs/01-pandas.ipynb">Data analysis basics with pandas</a></h3>
+<h3 id="data-analysis-basics-with-pandas"><a href="https://colab.research.google.com/github/jsoma/2025-birn/blob/main/docs/01-pandas.ipynb">Data analysis basics with pandas</a></h3>
 <p>Pandas is the most common tool that programmers use for analyzing data. And if that wasn't good enough for you: AI uses it, too!</p>
 <div class="resource-buttons">
 
@@ -202,7 +224,7 @@ function loadSlides(id, src) {
 <div style="margin: 0.5em 0; color: #666;">📑 Slides: <a href="./structured-data/structured-data.pdf">structured-data.pdf</a></div>
 
 </ul>
-<h3><a href="https://colab.research.google.com/github/jsoma/2025-birn/blob/main/docs/02-bids.ipynb">Extracting Bid Data from PDFs</a></h3>
+<h3 id="extracting-bid-data-from-pdfs"><a href="https://colab.research.google.com/github/jsoma/2025-birn/blob/main/docs/02-bids.ipynb">Extracting Bid Data from PDFs</a></h3>
 <p>Working with data in the real world is an awful, awful experience. Let's work on some spreadsheets about Kosovo's privatisation efforts.</p>
 <div class="resource-buttons">
 
@@ -231,7 +253,7 @@ function loadSlides(id, src) {
 
 </ul>
 
-<h2>AI Do's and Don't</h2>
+<h2 id="ai-dos-and-dont">AI Do's and Don't</h2>
 <div id="slides-birn-ai-dos-donts" class="slide-embed" style="margin: 2em 0;">
     <div class="slide-preview" onclick="loadSlides('slides-birn-ai-dos-donts', './ai-dos-donts/birn-ai-dos-donts.pdf')">
         <img src="./birn-ai-dos-donts-thumb.png" alt="First slide" style="max-width: 100%; cursor: pointer;">
@@ -256,7 +278,7 @@ function loadSlides(id, src) {
 }
 </script>
 
-<h3><a href="./ai-dos-and-donts.html">AI Do's and Don'ts</a></h3>
+<h3 id="ai-dos-and-donts"><a href="./ai-dos-and-donts.html">AI Do's and Don'ts</a></h3>
 <p>How can AI help with newsroom tasks?</p>
 <div>
 
@@ -294,9 +316,9 @@ function loadSlides(id, src) {
 
 </ul>
 
-<h2>Adv Data Journalism II: Unstructured Data</h2>
-<h3><a href="./scraping-web.html">Scraping web sites</a></h3>
-<p>Grabbing data from the internet into a format we can use</p>
+<h2 id="adv-data-journalism-ii-unstructured-data">Adv Data Journalism II: Unstructured Data</h2>
+<h3 id="scraping-web-sites-and-unstructured-data"><a href="./scraping-web.html">Scraping web sites and unstructured data</a></h3>
+<p>Making the best of data from the internet and bad, ugly data from PDFs</p>
 <div>
 
 </div>
@@ -314,6 +336,14 @@ function loadSlides(id, src) {
 <li><a href="https://motrix.app/">Motrix</a> A great app for downloading things</li>
 
 <li><a href="https://chromewebstore.google.com/detail/bulk-pdf-downloader-%E2%80%93-dow/flpckiejbjlkjgfohcoognkaogiacjnh">Bulk PDF Downloader</a> Chrome extension for downloading all of the PDFs linked on a page</li>
+
+<li><a href="https://github.com/yt-dlp/yt-dlp">yt-dlp</a> A Python library for downloading videos on the internet</li>
+
+<li><a href="https://github.com/openai/whisper">Whisper</a> A Python library for transcribing audio and video</li>
+
+<li><a href="https://s7.stacher.io/">Stacher</a> A tool for downloading YouTube videos without code</li>
+
+<li><a href="https://pulitzercenter.org/misinformation-tiktok-how-documented-examined-hundreds-videos-different-languages">Misinformation on TikTok</a> How 'Documented' Examined Hundreds of Videos in Different Languages</li>
 
 </ul>
 

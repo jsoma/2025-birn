@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Scraping web sites</title>
+    <title>Scraping web sites and unstructured data</title>
     <style>
         body {
             max-width: 800px;
@@ -12,8 +12,24 @@
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             line-height: 1.6;
             color: #333;
+            font-size: 16px;
+            padding-bottom: 5em;
         }
-        h1, h2, h3, h4 { margin-top: 2em; }
+        h1, h3, h4 { margin-top: 2em; }
+        h2 {
+            position: sticky;
+            top: 0;
+            background: white;
+            padding-top: 2em;
+            padding-bottom: 0.5em;
+            z-index: 100;
+            border-bottom: 2px solid #eee;
+        }
+        /* Give the first h2 (Table of Contents) less top margin */
+        h2:first-of-type {
+            margin-top: 1em;
+            padding-top: 1em;
+        }
         h3 a {
             text-decoration: none;
         }
@@ -21,7 +37,7 @@
             text-decoration: underline;
         }
         p {
-            margin: 0.5em 0;
+            margin: 1em 0;
         }
         code { 
             background: #f4f4f4; 
@@ -39,16 +55,22 @@
         a { color: #0066cc; }
         img {
             display: block;
-            max-width: 100%;
+            max-width: 80%;
             height: auto;
-            margin: 0 auto;
+            margin: 1em auto;
             border: solid 1px #999;
+        }
+        blockquote {
+            border-left: solid lightblue 20px;
+            margin-left: 4em;
+            padding-left: 1em;
+            color: #999;
         }
         video {
             display: block;
-            max-width: 100%;
+            max-width: 80%;
             height: auto;
-            margin: 0 auto;
+            margin: 1em auto;
             border: solid 1px #999;
         }
         .download-box {
@@ -132,8 +154,17 @@
     </style>
 </head>
 <body>
-<h1>Scraping web sites</h1>
-<h2>Useful Links</h2>
+<h1 id="scraping-web-sites-and-unstructured-data">Scraping web sites and unstructured data</h1>
+<h2 id="table-of-contents">Table of Contents</h2>
+<ul>
+<li><a href="#useful-links">Useful Links</a></li>
+<li><a href="#intro">Intro</a></li>
+<li><a href="#using-notebooklm">Using NotebookLM</a></li>
+<li><a href="#using-easy-scraper">Using Easy Scraper</a></li>
+<li><a href="#running-code-in-colab">Running code in Colab</a></li>
+<li><a href="#exercises">Exercises</a></li>
+</ul>
+<h2 id="useful-links">Useful Links</h2>
 <ul>
 <li><a href="https://jsoma.github.io/easy-scraper-modified/">Easy Scraper (modified)</a> - Chrome extension for scraping – modified by me to make it work in more cases</li>
 <li><a href="https://prishtinaonline.com/prokurimi/njoftim-per-kontrate">Procurement contracts</a></li>
@@ -141,9 +172,21 @@
 <li><a href="https://web.archive.org/web/20121116220124/http://www.coloribus.com/focus/outdoor-ads-as-monuments-sculptures-stunts-installations-statues/11933155/">Outdoor ads as monuments, sculptures, stunts, installations, statues</a> - A resource from the NEWBORN monument's Wikipedia page</li>
 <li><a href="https://motrix.app/">Motrix</a> - A great app for downloading things</li>
 <li><a href="https://chromewebstore.google.com/detail/bulk-pdf-downloader-%E2%80%93-dow/flpckiejbjlkjgfohcoognkaogiacjnh">Bulk PDF Downloader</a> - Chrome extension for downloading all of the PDFs linked on a page</li>
+<li><a href="https://github.com/yt-dlp/yt-dlp">yt-dlp</a> - A Python library for downloading videos on the internet</li>
+<li><a href="https://github.com/openai/whisper">Whisper</a> - A Python library for transcribing audio and video</li>
+<li><a href="https://s7.stacher.io/">Stacher</a> - A tool for downloading YouTube videos without code</li>
+<li><a href="https://pulitzercenter.org/misinformation-tiktok-how-documented-examined-hundreds-videos-different-languages">Misinformation on TikTok</a> - How 'Documented' Examined Hundreds of Videos in Different Languages</li>
 </ul>
+<h2 id="intro">Intro</h2>
 <p>Scraping is a powerful way to convert web sites into data files that you can analysis with Sheets, Excel, or even ChatGPT.</p>
-<h2>Using Easy Scraper</h2>
+<h2 id="using-notebooklm">Using NotebookLM</h2>
+<p>Visit <a href="NotebookLM">https://notebooklm.google.com/</a> and create a <strong>new notebook</strong>.</p>
+<p><img alt="" src="notebooklm-new.png" /></p>
+<p>Upload your files.</p>
+<p><img alt="" src="notebooklm-upload.png" /></p>
+<p>Ask your question.</p>
+<p><img alt="" src="notebooklm-question.png" /></p>
+<h2 id="using-easy-scraper">Using Easy Scraper</h2>
 <p>After you've installed Easy Scraper, you first need to open it by clicking the extensions button.</p>
 <p><img alt="" src="easyscraper-open.png" /></p>
 <p>Then you might need to click "Change List" until the rows look reasonably right. Don't worry if there's extra stuff in there, you can clean it up later.</p>
@@ -161,5 +204,52 @@
 
 <p>And in the end, export with the <strong>CSV</strong> button.</p>
 <p><img alt="" src="easyscraper-download.png" /></p>
+<h2 id="running-code-in-colab">Running code in Colab</h2>
+<h3 id="getting-some-code">Getting some code</h3>
+<p>First, open up your CSV in Google Sheets or Excel.</p>
+<p>Explain what you want to ChatGPT. Let's say you asked me, "I want to explore the data" and I said "there's a nice graphing library called Altair that will do that for you"</p>
+<blockquote>
+<p><a href="https://chatgpt.com/share/68ae8bc9-2b8c-800d-a701-2ad4e8633c11">Here's my example</a></p>
+<p>I have the following data in amazon-2025-08-27.csv, i want to analyze it in Google Colab and make an interactive Altair graphic that plots the price per pound vs number of stars.</p>
+<p>(paste a few rows of data)</p>
+</blockquote>
+<h3 id="using-the-code">Using the code</h3>
+<p>Then, visit <a href="https://colab.research.google.com/">Google Colab</a> and create a <strong>New Notebook</strong>.</p>
+<p><img alt="" src="colab-new.png" /></p>
+<p>To be able to upload files, click <strong>Run all</strong> to make the notebook start, then click the <strong>Folder button</strong> on the left-hand side.</p>
+<p><img alt="" src="colab-upload-1.png" /></p>
+<p>Now you can use the Upload icon or drag-and-drop files in.</p>
+<video width="100%" height="auto" autoplay loop muted playsinline>
+  <source src="colab-upload-2.mov">
+</video>
+
+<p>Now you'll copy the code <a href="https://chatgpt.com/share/68ae8bc9-2b8c-800d-a701-2ad4e8633c11">from the ChatGPT conversation</a> and put it into your notebook. Use the <strong>+ Code</strong> button to add new blocks of code, and <strong>►</strong> Play button to run your code.</p>
+<p><img alt="" src="copy-code-1.png" /></p>
+<p><img alt="" src="copy-code-2.png" /></p>
+<p>And then you'll be good to go! </p>
+<h3 id="downloading-clean-data">Downloading "clean" data</h3>
+<p>If you want to clean your data or download a file analysis, <strong>just ask ChatGPT</strong>. It can give you code to create new, clean CSV files and download them to your computer from Colab.</p>
+<blockquote>
+<p>Provide code to fully clean the file and download it as something nice I can give a data person. I'm in Google Colab.</p>
+</blockquote>
+<h2 id="exercises">Exercises</h2>
+<h3 id="analyzing-airbnb">Analyzing Airbnb</h3>
+<ol>
+<li>Visit <a href="https://www.airbnb.com/">Airbnb</a> for a given region. Search for some time in the future.</li>
+<li>Scrape the results</li>
+<li>Find the number of apartments and average cost in each city</li>
+</ol>
+<h3 id="analyzing-a-youtube-channel">Analyzing a YouTube channel</h3>
+<ol>
+<li>Visit a <a href="https://www.youtube.com/@joerogan">Youtube channel</a> popular in your country.</li>
+<li>Ask ChatGPT for code using yt-dlp to download the most recent 10 videos from a specific account or playlist, then to transcribe it using Python Whisper's  "turbo" version and download the results as a CSV file.</li>
+<li>Upload it into Google Sheets and use Claude for Sheets to summarize or analyze each transcript.</li>
+</ol>
+<h3 id="analyzing-procurement-data">Analyzing procurement data</h3>
+<ol>
+<li>Scrape the list of <a href="https://prishtinaonline.com/prokurimi/njoftim-per-kontrate">procurement data for Prishtina</a></li>
+<li>Download them all (or some of them, probably) using <a href="https://motrix.app/">Motrix</a></li>
+<li>What questions can you answer with NotebookLM? What questions do you need to convert to a spreadsheet for?</li>
+</ol>
 </body>
 </html>
